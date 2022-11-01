@@ -1,0 +1,6 @@
+id,train_run,date,repaired,cause
+0,5,02/06/2008 11:50 PM,True,Zniszczone tory
+1,44,06/06/2008 04:00 PM,False,Awaria klimatyzacji
+2,9,06/04/2008 03:57 PM,True,Awaria klimatyzacji
+3,26,06/25/2008 07:52 PM,False,Awaria klimatyzacji
+4,48,04/12/2008 04:04 AM,False,Zniszczone tory

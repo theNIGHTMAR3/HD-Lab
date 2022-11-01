@@ -1,0 +1,11 @@
+id,station_name,city
+0,Szczecin Leśny,Białystok
+1,Białystok Leśny,Warszawa
+2,Poznań Północ,Warszawa
+3,Kraków Główny,Warszawa
+4,Szczecin Wschód,Gdańsk
+5,Warszawa Północ,Szczecin
+6,Warszawa Główny,Szczecin
+7,Gdańsk Miasto,Kraków
+8,Gdańsk Północ,Kraków
+9,Kraków Północ,Warszawa
