@@ -25,6 +25,8 @@ issue_cause = ["Awaria silnika", "Zniszczone tory", "Awaria klimatyzacji"]
 
 cargo_type = ["Elektronika", "Węgiel", "Paliwo", "Poczta"]
 
+timeSets = []
+
 
 def randomDateNew(start_date, end_date):
     random_date = start_date + (end_date - start_date) * random.random()
@@ -215,5 +217,25 @@ def generateData(multiplier, time):
     generateMalfunctions(multiplier, time, trainRuns)
 
 
+
 if __name__ == '__main__':
-    generateData(1, "t0")
+    # stored as pairs of BeginDate and EndDate
+    set0 = (datetime(2021, 1, 1), datetime(2021, 6, 30))
+    timeSets.append(set0)
+
+    set1 = (datetime(2021, 7, 1), datetime(2021, 12, 31))
+    timeSets.append(set1)
+
+    set2 = (datetime(2022, 1, 1), datetime(2022, 6, 30))
+    timeSets.append(set2)
+
+
+    timeMode = 0
+    # timeMode = 1
+    # timeMode = 2
+
+    dataSizeMultiplier = 1
+    # dataSizeMultiplier = 2
+    # dataSizeMultiplier = 3
+
+    generateData(dataSizeMultiplier, timeMode)
