@@ -1,6 +1,6 @@
 id,train_run,date
 0,5,True
-1,44,False
-2,9,True
-3,26,False
-4,48,False
+1,20,False
+2,5,False
+3,10,False
+4,25,True

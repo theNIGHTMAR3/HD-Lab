@@ -26,26 +26,10 @@ issue_cause = ["Awaria silnika", "Zniszczone tory", "Awaria klimatyzacji"]
 cargo_type = ["Elektronika", "Węgiel", "Paliwo", "Poczta"]
 
 
-# from https://stackoverflow.com/questions/553303/generate-a-random-date-between-two-other-dates
-def str_time_prop(start, end, time_format, prop):
-    """Get a time at a proportion of a range of two formatted times.
+def randomDateNew(start_date, end_date):
+    random_date = start_date + (end_date - start_date) * random.random()
+    return random_date
 
-    start and end should be strings specifying times formatted in the
-    given format (strftime-style), giving an interval [start, end].
-    prop specifies how a proportion of the interval to be taken after
-    start.  The returned time will be in the specified format.
-    """
-
-    stime = time.mktime(time.strptime(start, time_format))
-    etime = time.mktime(time.strptime(end, time_format))
-
-    ptime = stime + prop * (etime - stime)
-
-    return time.strftime(time_format, time.localtime(ptime))
-
-
-def random_date(start, end, prop):
-    return str_time_prop(start, end, '%m/%d/%Y %I:%M %p', prop)
 
 # generates random delay for trainRun. 20% for delay not appearing, 80% for delay 0:01 - 2:59 equally distributed
 def generateTimeDelta():
@@ -153,28 +137,29 @@ def generateRoutes(multiplier, time, stations):
 
 def generateTrainRuns(multiplier, time, trains, routes, drivers):
     trainRuns = []
-    dateTimeFormat = '%m/%d/%Y %I:%M %p'
 
-    # TODO: solbe the types problelm
+
+    # TODO: solve the types problem
     # https://bobbyhadz.com/blog/python-add-time-to-datetime-object
     
     for i in range(50 * multiplier):
         id = i
-        planned_departure = random_date("1/1/2008 1:30 PM", "1/1/2009 4:50 AM", random.random())
-        date_time_obj = datetime.strptime(planned_departure, dateTimeFormat)
-        # planned train run takes 2 to 8 hours
-        planned_arrival_min = date_time_obj + timedelta(hours=2, minutes=0, seconds=0)
-        planned_arrival_max = date_time_obj + timedelta(hours=8, minutes=0, seconds=0)
-        planned_arrival = random_date(str(planned_arrival_min), str(planned_arrival_max), random.random())
+        begin_date = datetime(2020, 5, 17)
+        end_date = datetime(2021, 6, 20)
 
-        date_time_obj = datetime.strptime(planned_departure, dateTimeFormat)
+        planned_departure = randomDateNew(begin_date, end_date)
+        # planned train run takes 2 to 8 hours
+        planned_arrival_min = planned_departure + timedelta(hours=2, minutes=0, seconds=0)
+        planned_arrival_max = planned_departure + timedelta(hours=8, minutes=0, seconds=0)
+        planned_arrival = randomDateNew(planned_arrival_min, planned_arrival_max)
+
+
         # TODO: types of delay(departure, arrival)
         delayHours, delayMinutes = generateTimeDelta()
-        real_departure = date_time_obj + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
+        real_departure = planned_departure + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
 
-        date_time_obj = datetime.strptime(planned_arrival, dateTimeFormat)
         delayHours, delayMinutes = generateTimeDelta()
-        real_arrival = date_time_obj + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
+        real_arrival = planned_arrival + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
 
         id_train = random.choice(trains).id
         id_route = random.choice(routes).id
@@ -197,7 +182,10 @@ def generateMalfunctions(multiplier, time, trainRuns):
         id = i
         train_run = random.choice(trainRuns).id
         # TODO: set the range of random dates based on @time parameter
-        date = random_date("1/1/2008 1:30 PM", "1/1/2009 4:50 AM", random.random())
+        begin_date = datetime(2020, 5, 17)
+        end_date = datetime(2021, 6, 20)
+        date = randomDateNew(begin_date, end_date)
+
         repaired = bool(random.getrandbits(1))
         cause = random.choice(issue_cause)
 
