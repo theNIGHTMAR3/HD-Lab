@@ -60,151 +60,158 @@ def generatePESEL():
 
 def generateDrivers(multiplier, time):
     drivers = []
-    for i in range(5 * multiplier):
-        PESEL = generatePESEL()
-        name = random.choice(names)
-        surname = random.choice(surnames)
-        gender = ""
-        if name[-1] == 'a':
-            gender = "Kobieta"
-        else:
-            gender = "Mężczyzna"
-        drivers.append(Driver(PESEL, name, surname, gender))
+    dataSize = 5 * multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            PESEL = generatePESEL()
+            name = random.choice(names)
+            surname = random.choice(surnames)
+            gender = ""
+            if name[-1] == 'a':
+                gender = "Kobieta"
+            else:
+                gender = "Mężczyzna"
+            drivers.append(Driver(PESEL, name, surname, gender))
 
-    driversDF = pd.DataFrame.from_records([d.to_dict() for d in drivers])
-    driversDF.to_csv("generated_data/drivers", index=False)
+        driversDF = pd.DataFrame.from_records([d.to_dict() for d in drivers])
+        driversDF.to_csv("generated_data/drivers" + str(j), index=False)
 
-    newdf = pd.read_csv("generated_data/drivers", index_col=False)
-    print(newdf.to_string(index=False))
-    print("\n\n")
+        newdf = pd.read_csv("generated_data/drivers" + str(j), index_col=False)
+        print(newdf.to_string(index=False))
+        print("\n\n")
 
     return drivers
 
 
 def generateStations(multiplier, time):
     stations = []
-    for i in range(10 * multiplier):
-        id = i
-        name = str(random.choice(cities) + ' ' + random.choice(station_names))
-        city = random.choice(cities)
-        stations.append(Station(id, name, city))
+    dataSize = 10 * multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            id = i + j * dataSize
+            name = str(random.choice(cities) + ' ' + random.choice(station_names))
+            city = random.choice(cities)
+            stations.append(Station(id, name, city))
 
-    stationsDF = pd.DataFrame.from_records([d.to_dict() for d in stations])
-    stationsDF.to_csv("generated_data/stations", index=False)
-    newdf = pd.read_csv("generated_data/stations", index_col=False)
-    print(newdf.to_string(index=False))
-    print("\n\n")
+        stationsDF = pd.DataFrame.from_records([d.to_dict() for d in stations])
+        stationsDF.to_csv("generated_data/stations" + str(j), index=False)
+        newdf = pd.read_csv("generated_data/stations" + str(j), index_col=False)
+        print(newdf.to_string(index=False))
+        print("\n\n")
     return stations
 
 
 def generateTrains(multiplier, time):
     trains = []
-    for i in range(10 * multiplier):
-        id = i
-        type = random.choice(train_types)
-        carts = random.randint(2, 20)
-        seats = random.randint(10, carts * 80)
-        capacity = random.randint(1000, carts * 1000)
-        trains.append(Train(id, type, carts, seats, capacity))
+    dataSize = 10 * multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            id = i + j*dataSize
+            type = random.choice(train_types)
+            carts = random.randint(2, 20)
+            seats = random.randint(10, carts * 80)
+            capacity = random.randint(1000, carts * 1000)
+            trains.append(Train(id, type, carts, seats, capacity))
 
-    trainsDF = pd.DataFrame.from_records([d.to_dict() for d in trains])
-    trainsDF.to_csv("generated_data/trains", index=False)
-    newdf = pd.read_csv("generated_data/trains", index_col=False)
-    print(newdf.to_string(index=False))
-    print("\n\n")
+        trainsDF = pd.DataFrame.from_records([d.to_dict() for d in trains])
+        trainsDF.to_csv("generated_data/trains" + str(j), index=False)
+        newdf = pd.read_csv("generated_data/trains" + str(j), index_col=False)
+        print(newdf.to_string(index=False))
+        print("\n\n")
     return trains
 
 
 def generateRoutes(multiplier, time, stations):
     routes = []
-    for i in range(10 * multiplier):
-        id = i
-        randomStation = random.choice(stations)
-        id_station_start = randomStation.id
-        copy_list = stations.copy()
-        copy_list.remove(randomStation)
-        id_station_end = random.choice(copy_list).id
+    dataSize = 10 * multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            id = i + j*dataSize
+            randomStation = random.choice(stations)
+            id_station_start = randomStation.id
+            copy_list = stations.copy()
+            copy_list.remove(randomStation)
+            id_station_end = random.choice(copy_list).id
 
-        # TODO: calculate distance based on longitude and latitude
-        distance = random.randint(10, 1000)
-        routes.append(Route(id, id_station_start, id_station_end, distance))
+            # TODO: calculate distance based on longitude and latitude
+            distance = random.randint(10, 1000)
+            routes.append(Route(id, id_station_start, id_station_end, distance))
 
-    routesDF = pd.DataFrame.from_records([d.to_dict() for d in routes])
-    routesDF.to_csv("generated_data/routes", index=False)
-    newdf = pd.read_csv("generated_data/routes", index_col=False)
-    print(newdf.to_string(index=False))
-    print("\n\n")
+        routesDF = pd.DataFrame.from_records([d.to_dict() for d in routes])
+        routesDF.to_csv("generated_data/routes" + str(j), index=False)
+        newdf = pd.read_csv("generated_data/routes" + str(j), index_col=False)
+        print(newdf.to_string(index=False))
+        print("\n\n")
     return routes
 
 
 def generateTrainRuns(multiplier, time, trains, routes, drivers):
     trainRuns = []
+    dataSize = 20*multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            id = i + j*dataSize
+            begin_date = datetime(2020, 5, 17)
+            end_date = datetime(2021, 6, 20)
+
+            planned_departure = randomDateNew(begin_date, end_date)
+            # planned train run takes 2 to 8 hours
+            planned_arrival_min = planned_departure + timedelta(hours=2, minutes=0, seconds=0)
+            planned_arrival_max = planned_departure + timedelta(hours=8, minutes=0, seconds=0)
+            planned_arrival = randomDateNew(planned_arrival_min, planned_arrival_max)
 
 
-    # TODO: solve the types problem
-    # https://bobbyhadz.com/blog/python-add-time-to-datetime-object
-    
-    for i in range(50 * multiplier):
-        id = i
-        begin_date = datetime(2020, 5, 17)
-        end_date = datetime(2021, 6, 20)
+            # TODO: types of delay(departure, arrival)
+            delayHours, delayMinutes = generateTimeDelta()
+            real_departure = planned_departure + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
 
-        planned_departure = randomDateNew(begin_date, end_date)
-        # planned train run takes 2 to 8 hours
-        planned_arrival_min = planned_departure + timedelta(hours=2, minutes=0, seconds=0)
-        planned_arrival_max = planned_departure + timedelta(hours=8, minutes=0, seconds=0)
-        planned_arrival = randomDateNew(planned_arrival_min, planned_arrival_max)
+            delayHours, delayMinutes = generateTimeDelta()
+            real_arrival = planned_arrival + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
 
+            id_train = random.choice(trains).id
+            id_route = random.choice(routes).id
+            PESEL = random.choice(drivers).PESEL
+            trainRuns.append(TrainRun(id, planned_departure, planned_arrival, real_departure, real_arrival, id_train,
+                                      id_route, PESEL))
 
-        # TODO: types of delay(departure, arrival)
-        delayHours, delayMinutes = generateTimeDelta()
-        real_departure = planned_departure + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
-
-        delayHours, delayMinutes = generateTimeDelta()
-        real_arrival = planned_arrival + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
-
-        id_train = random.choice(trains).id
-        id_route = random.choice(routes).id
-        PESEL = random.choice(drivers).PESEL
-        trainRuns.append(TrainRun(id, planned_departure, planned_arrival, real_departure, real_arrival, id_train,
-                                  id_route, PESEL))
-
-    trainRunsDF = pd.DataFrame.from_records([d.to_dict() for d in trainRuns])
-    trainRunsDF.to_csv("generated_data/trainRuns", index=False)
-    newdf = pd.read_csv("generated_data/trainRuns", index_col=False)
-    print(newdf.to_string(index=False))
-    print("\n\n")
+        trainRunsDF = pd.DataFrame.from_records([d.to_dict() for d in trainRuns])
+        trainRunsDF.to_csv("generated_data/trainRuns" + str(j), index=False)
+        newdf = pd.read_csv("generated_data/trainRuns" + str(j), index_col=False)
+        print(newdf.to_string(index=False))
+        print("\n\n")
     return trainRuns
 
 
 def generateMalfunctions(multiplier, time, trainRuns):
     malfunctions = []
     malfunctionsSheet = []
-    for i in range(5 * multiplier):
-        id = i
-        train_run = random.choice(trainRuns).id
-        # TODO: set the range of random dates based on @time parameter
-        begin_date = datetime(2020, 5, 17)
-        end_date = datetime(2021, 6, 20)
-        date = randomDateNew(begin_date, end_date)
+    dataSize = 5*multiplier
+    for j in range(time + 1):
+        for i in range(dataSize):
+            id = i + j*dataSize
+            train_run = random.choice(trainRuns).id
+            # TODO: set the range of random dates based on @time parameter
+            begin_date = datetime(2020, 5, 17)
+            end_date = datetime(2021, 6, 20)
+            date = randomDateNew(begin_date, end_date)
 
-        repaired = bool(random.getrandbits(1))
-        cause = random.choice(issue_cause)
+            repaired = bool(random.getrandbits(1))
+            cause = random.choice(issue_cause)
 
-        malfunctions.append(Malfunction(id, train_run, date, repaired))
-        malfunctionsSheet.append(MalfunctionSheet(id, train_run, date, repaired, cause))
+            malfunctions.append(Malfunction(id, train_run, date, repaired))
+            malfunctionsSheet.append(MalfunctionSheet(id, train_run, date, repaired, cause))
 
-    malfunDF = pd.DataFrame.from_records([m.to_dict() for m in malfunctions])
-    malfunsheetDF = pd.DataFrame.from_records([m.to_dict() for m in malfunctionsSheet])
-    malfunDF.to_csv("generated_data/malfunction", index=False)
-    malfunsheetDF.to_csv("generated_data/malfunction_sheet", index=False)
-    newMalfunDF = pd.read_csv("generated_data/malfunction", index_col=False)
-    newMalfunSheetDF = pd.read_csv("generated_data/malfunction_sheet", index_col=False)
-    print(newMalfunDF.to_string(index=False))
-    print("\n\n")
-    print(newMalfunSheetDF.to_string(index=False))
-    print("\n\n")
-
+        malfunDF = pd.DataFrame.from_records([m.to_dict() for m in malfunctions])
+        malfunsheetDF = pd.DataFrame.from_records([m.to_dict() for m in malfunctionsSheet])
+        malfunDF.to_csv("generated_data/malfunction" + str(j), index=False)
+        malfunsheetDF.to_csv("generated_data/malfunction_sheet" + str(j), index=False)
+        newMalfunDF = pd.read_csv("generated_data/malfunction" + str(j), index_col=False)
+        newMalfunSheetDF = pd.read_csv("generated_data/malfunction_sheet" + str(j), index_col=False)
+        print(newMalfunDF.to_string(index=False))
+        print("\n\n")
+        print(newMalfunSheetDF.to_string(index=False))
+        print("\n\n")
+    return malfunctions, malfunctionsSheet
 
 def generateData(multiplier, time):
     drivers = generateDrivers(multiplier, time)
@@ -214,7 +221,7 @@ def generateData(multiplier, time):
 
     trainRuns = generateTrainRuns(multiplier, time, trains, routes, drivers)
 
-    generateMalfunctions(multiplier, time, trainRuns)
+    malfunctions, malfunctionsSheet = generateMalfunctions(multiplier, time, trainRuns)
 
 
 
@@ -229,11 +236,12 @@ if __name__ == '__main__':
     set2 = (datetime(2022, 1, 1), datetime(2022, 6, 30))
     timeSets.append(set2)
 
-
-    timeMode = 0
+    # choose one of the available time modes
+    timeMode = 1
     # timeMode = 1
     # timeMode = 2
 
+    # choose one of the available data size multipliers
     dataSizeMultiplier = 1
     # dataSizeMultiplier = 2
     # dataSizeMultiplier = 3
