@@ -149,10 +149,10 @@ def generateTrainRuns(multiplier, time, trains, routes, drivers):
     trainRuns = []
     dataSize = 20*multiplier
     for j in range(time + 1):
+        begin_date = timeSets[j][0]
+        end_date = timeSets[j][1]
         for i in range(dataSize):
             id = i + j*dataSize
-            begin_date = datetime(2020, 5, 17)
-            end_date = datetime(2021, 6, 20)
 
             planned_departure = randomDateNew(begin_date, end_date)
             # planned train run takes 2 to 8 hours
@@ -187,12 +187,12 @@ def generateMalfunctions(multiplier, time, trainRuns):
     malfunctionsSheet = []
     dataSize = 5*multiplier
     for j in range(time + 1):
+        begin_date = timeSets[j][0]
+        end_date = timeSets[j][1]
         for i in range(dataSize):
             id = i + j*dataSize
             train_run = random.choice(trainRuns).id
-            # TODO: set the range of random dates based on @time parameter
-            begin_date = datetime(2020, 5, 17)
-            end_date = datetime(2021, 6, 20)
+            print("Selected times: ", begin_date, end_date)
             date = randomDateNew(begin_date, end_date)
 
             repaired = bool(random.getrandbits(1))
