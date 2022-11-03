@@ -214,6 +214,7 @@ def generateRoutes(multiplier, time, stations):
 
 def generateTrainRuns(multiplier, time, trains, routes, drivers):
     trainRuns = []
+    trainRunsSheet = []
     dataSize = 20*multiplier
     for j in range(time + 1):
         begin_date = timeSets[j][0]
@@ -227,8 +228,6 @@ def generateTrainRuns(multiplier, time, trains, routes, drivers):
             planned_arrival_max = planned_departure + timedelta(hours=8, minutes=0, seconds=0)
             planned_arrival = randomDateNew(planned_arrival_min, planned_arrival_max)
 
-
-            # TODO: types of delay(departure, arrival)
             delayHours, delayMinutes = generateTimeDelta()
             real_departure = planned_departure + timedelta(hours=delayHours, minutes=delayMinutes, seconds=0)
 
@@ -241,12 +240,29 @@ def generateTrainRuns(multiplier, time, trains, routes, drivers):
             trainRuns.append(TrainRun(id, planned_departure, planned_arrival, real_departure, real_arrival, id_train,
                                       id_route, PESEL))
 
+            selected_train = [e for e in trains if e.id == id_train][0]
+            train_capacity_max = selected_train.capacity
+            items_mass = random.randrange(0, train_capacity_max)
+            items_type = random.choice(cargo_type)
+
+            # get the maximum capacity of train
+            train_seats_max = selected_train.seats
+            train_seats_taken = random.randrange(0,train_seats_max)
+            trainRunsSheet.append(TrainRunSheet(id,items_mass, items_type, train_seats_taken))
+
+
         trainRunsDF = pd.DataFrame.from_records([d.to_dict() for d in trainRuns])
+        trainRunsSheetDF = pd.DataFrame.from_records([d.to_dict() for d in trainRunsSheet])
         trainRunsDF.to_csv("generated_data/trainRuns" + str(j), index=False)
+        trainRunsSheetDF.to_csv("generated_data/trainRunsSheet" + str(j), index=False)
         newdf = pd.read_csv("generated_data/trainRuns" + str(j), index_col=False)
+        newdfSheet = pd.read_csv("generated_data/trainRunsSheet" + str(j), index_col=False)
         print(newdf.to_string(index=False))
+        print("\n")
+        print(newdfSheet.to_string(index=False))
         print("\n\n")
-    return trainRuns
+
+    return trainRuns, trainRunsSheet
 
 
 def generateMalfunctions(multiplier, time, trainRuns):
@@ -286,7 +302,7 @@ def generateData(multiplier, time):
     trains = generateTrains(multiplier, time)
     routes = generateRoutes(multiplier, time, stations)
 
-    trainRuns = generateTrainRuns(multiplier, time, trains, routes, drivers)
+    trainRuns, trainRunsSheet = generateTrainRuns(multiplier, time, trains, routes, drivers)
 
     malfunctions, malfunctionsSheet = generateMalfunctions(multiplier, time, trainRuns)
 
