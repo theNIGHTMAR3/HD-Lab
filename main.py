@@ -49,6 +49,7 @@ def printDFFromDF(filename):
     print(newdf.to_string(index=False))
     print("\n\n")
 
+
 # from https://pl.python.org/forum/index.php?topic=10389.0
 def generatePESEL():
     year = random.randint(1950, 2010)
@@ -173,7 +174,7 @@ def generateTrains(multiplier, time):
     dataSize = 10 * multiplier
     for j in range(time + 1):
         for i in range(dataSize):
-            id = i + j*dataSize
+            id = i + j * dataSize
             type = random.choice(train_types)
             carts = random.randint(2, 20)
             seats = random.randint(10, carts * 80)
@@ -193,7 +194,7 @@ def generateRoutes(multiplier, time, stations):
     dataSize = 10 * multiplier
     for j in range(time + 1):
         for i in range(dataSize):
-            id = i + j*dataSize
+            id = i + j * dataSize
             randomStation = random.choice(stations)
             id_station_start = randomStation.id
             copy_list = stations.copy()
@@ -215,12 +216,12 @@ def generateRoutes(multiplier, time, stations):
 def generateTrainRuns(multiplier, time, trains, routes, drivers):
     trainRuns = []
     trainRunsSheet = []
-    dataSize = 20*multiplier
+    dataSize = 20 * multiplier
     for j in range(time + 1):
         begin_date = timeSets[j][0]
         end_date = timeSets[j][1]
         for i in range(dataSize):
-            id = i + j*dataSize
+            id = i + j * dataSize
 
             planned_departure = randomDateNew(begin_date, end_date)
             # planned train run takes 2 to 8 hours
@@ -247,14 +248,14 @@ def generateTrainRuns(multiplier, time, trains, routes, drivers):
 
             # get the maximum capacity of train
             train_seats_max = selected_train.seats
-            train_seats_taken = random.randrange(0,train_seats_max)
-            trainRunsSheet.append(TrainRunSheet(id,items_mass, items_type, train_seats_taken))
-
+            train_seats_taken = random.randrange(0, train_seats_max)
+            trainRunsSheet.append(TrainRunSheet(id, items_mass, items_type, train_seats_taken))
 
         trainRunsDF = pd.DataFrame.from_records([d.to_dict() for d in trainRuns])
         trainRunsSheetDF = pd.DataFrame.from_records([d.to_dict() for d in trainRunsSheet])
         trainRunsDF.to_csv("generated_data/trainRuns" + str(j), index=False)
         trainRunsSheetDF.to_csv("generated_data/trainRunsSheet" + str(j), index=False)
+        trainRunsSheetDF.to_excel("generated_data/trainRunsSheet" + str(j) + ".xlsx", index=False)
         newdf = pd.read_csv("generated_data/trainRuns" + str(j), index_col=False)
         newdfSheet = pd.read_csv("generated_data/trainRunsSheet" + str(j), index_col=False)
         print(newdf.to_string(index=False))
@@ -268,12 +269,12 @@ def generateTrainRuns(multiplier, time, trains, routes, drivers):
 def generateMalfunctions(multiplier, time, trainRuns):
     malfunctions = []
     malfunctionsSheet = []
-    dataSize = 5*multiplier
+    dataSize = 5 * multiplier
     for j in range(time + 1):
         begin_date = timeSets[j][0]
         end_date = timeSets[j][1]
         for i in range(dataSize):
-            id = i + j*dataSize
+            id = i + j * dataSize
             train_run = random.choice(trainRuns).id
             print("Selected times: ", begin_date, end_date)
             date = randomDateNew(begin_date, end_date)
@@ -288,6 +289,7 @@ def generateMalfunctions(multiplier, time, trainRuns):
         malfunsheetDF = pd.DataFrame.from_records([m.to_dict() for m in malfunctionsSheet])
         malfunDF.to_csv("generated_data/malfunction" + str(j), index=False)
         malfunsheetDF.to_csv("generated_data/malfunction_sheet" + str(j), index=False)
+        malfunsheetDF.to_excel("generated_data/malfunction_sheet" + str(j) + ".xlsx", index=False)
         newMalfunDF = pd.read_csv("generated_data/malfunction" + str(j), index_col=False)
         newMalfunSheetDF = pd.read_csv("generated_data/malfunction_sheet" + str(j), index_col=False)
         print(newMalfunDF.to_string(index=False))
@@ -295,6 +297,7 @@ def generateMalfunctions(multiplier, time, trainRuns):
         print(newMalfunSheetDF.to_string(index=False))
         print("\n\n")
     return malfunctions, malfunctionsSheet
+
 
 def generateData(multiplier, time):
     drivers = generateDrivers(multiplier, time)
@@ -305,7 +308,6 @@ def generateData(multiplier, time):
     trainRuns, trainRunsSheet = generateTrainRuns(multiplier, time, trains, routes, drivers)
 
     malfunctions, malfunctionsSheet = generateMalfunctions(multiplier, time, trainRuns)
-
 
 
 if __name__ == '__main__':
@@ -330,3 +332,5 @@ if __name__ == '__main__':
     # dataSizeMultiplier = 3
 
     generateData(dataSizeMultiplier, timeMode)
+
+
