@@ -1,19 +1,20 @@
 class Driver:
-    PESEL = ""
-    name = ""
-    surname = ""
+    id = 0
+    nameAndSurname = ""
     gender = ""
+    PESEL = ""
 
-    def __init__(self, PESEL, name, surname, gender):
-        self.PESEL = PESEL
-        self.name = name
-        self.surname = surname
+    def __init__(self, id, nameAndSurname, gender, PESEL):
+        self.id = id
+        self.nameAndSurname = nameAndSurname
         self.gender = gender
+        self.PESEL = PESEL
+
 
     def to_dict(self):
         return {
-            'PESEL': self.PESEL,
-            'name': self.name,
-            'surname': self.surname,
+            'id': self.id,
+            'nameAndSurname': self.nameAndSurname,
             'gender': self.gender,
+            'PESEL': self.PESEL
         }

@@ -19,7 +19,7 @@ names = ["Adam", "Michał", "Krzysztof", "Alicja", "Marcel", "Mikołaj"]
 surnames = ["Kowalski", "Nowak", "Stachura", "Nazar", "Kuprianowicz", "Jacyno"]
 genders = ["Mężczyzna", "Kobieta"]
 station_names = ["Główny", "Leśny", "Miasto", "Wschód", "Północ"]
-train_types = ["Intercity", "Regio", "Arriva", "EIP", "SKM"]
+train_types = ["Intercity", "Regionalny", "Arriva", "EIP", "SKM"]
 
 issue_cause = ["Awaria silnika", "Zniszczone tory", "Awaria klimatyzacji"]
 
