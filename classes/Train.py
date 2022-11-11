@@ -1,20 +1,23 @@
 class Train:
 
-    def __init__(self, id, type, capacity, seats):
+    def __init__(self, id, type, carts, seats, capacity):
         self.id = id
         self.type = type
-        self.capacity = capacity
+        self.carts = carts
         self.seats = seats
+        self.capacity = capacity
 
     id = 0
     type = ""
-    capacity = 0
+    carts = 0
     seats = 0
+    capacity = 0
 
     def to_dict(self):
         return {
             'id': self.id,
             'type': self.type,
-            'capacity': self.capacity,
-            'seats': self.seats
+            'carts': self.carts,
+            'seats': self.seats,
+            'capacity': self.capacity
         }
