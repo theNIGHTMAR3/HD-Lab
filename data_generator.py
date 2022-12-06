@@ -330,7 +330,7 @@ def generateData(multiplier, time):
     malfunctions, malfunctionsSheet = generateMalfunctions(multiplier, time, trainRuns)
 
 
-if __name__ == '__main__':
+def runMain():
     # stored as pairs of start_date and end_date
     set0 = (datetime(2021, 1, 1), datetime(2021, 6, 30))
     timeSets.append(set0)
@@ -352,3 +352,13 @@ if __name__ == '__main__':
     # dataSizeMultiplier = 3
 
     generateData(dataSizeMultiplier, timeMode)
+
+if __name__ == '__main__':
+    # runMain()
+    import time
+
+    start_time = time.time()
+    for i in range(pow(10,9)):
+        a = i*10
+    print("--- %s seconds ---" % (time.time() - start_time))
+
